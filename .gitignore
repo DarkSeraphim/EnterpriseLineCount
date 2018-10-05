@@ -1,5 +1,5 @@
-bazel-EnterpriseLineCount/
-bazel-bin/
-bazel-genfiles/
-bazel-out/
-bazel-testlogs/
+bazel-EnterpriseLineCount
+bazel-bin
+bazel-genfiles
+bazel-out
+bazel-testlogs
