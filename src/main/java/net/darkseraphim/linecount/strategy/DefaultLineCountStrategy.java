@@ -9,8 +9,13 @@ import java.math.BigInteger;
 
 public class DefaultLineCountStrategy implements LineCountStrategy {
 
-    public BigInteger countLines(Path path) throws IOException {
-        FileIterable iterable = new FileIterable(path);
+    public BigInteger countLines(Path path) throws LineCountException {
+        FileIterable iterable;
+        try {
+            iterable = new FileIterable(path);
+        } catch (IOException e) {
+            throw new LineCountException(e);
+        }
         long lines = StreamSupport.stream(iterable.spliterator(), false) 
                                   .filter(c -> c == '\n') 
                                   .count(); 

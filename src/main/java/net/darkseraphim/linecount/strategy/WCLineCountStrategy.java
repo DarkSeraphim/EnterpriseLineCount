@@ -9,28 +9,35 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
 public class WCLineCountStrategy implements LineCountStrategy {
-    public BigInteger countLines(Path path) throws IOException {
-        Process process = new ProcessBuilder("wc", "-l", path.toString())
-                                .start();
+    public BigInteger countLines(Path path) throws LineCountException {
+        Process process;
         try {
+            process = new ProcessBuilder("wc", "-l", path.toString())
+                    .start();
             if (process.waitFor() != 0) {
                 throw new IOException(readOutput(process.getErrorStream()));
             }
-        } catch (InterruptedException ex) {
-            throw new IOException(ex);
+        } catch (InterruptedException | IOException ex) {
+            throw new LineCountException(ex);
         }
         return new BigInteger(readOutput(process.getInputStream()));
     }
 
-    private static String readOutput(InputStream in) throws IOException {
+    private static String readOutput(InputStream in) throws LineCountException {
         BufferedInputStream bis = new BufferedInputStream(in);
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        int result = bis.read();
-        while(result != -1) {
-            buf.write((byte) result);
-            result = bis.read();
+        String output;
+        try {
+            int result = bis.read();
+            while(result != -1) {
+                buf.write((byte) result);
+                result = bis.read();
+            }
+            // TODO: use system charset
+            output = buf.toString(StandardCharsets.UTF_8.name());
+        } catch (IOException e) {
+            throw new LineCountException(e);
         }
-        // TODO: use system charset
-        return buf.toString(StandardCharsets.UTF_8.name());
+        return output;
     }
 }
