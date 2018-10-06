@@ -2,6 +2,7 @@ package net.darkseraphim.linecount;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.file.Files;
 import java.util.stream.StreamSupport;
 
@@ -15,15 +16,12 @@ public class LineCounter {
       panic("File does not exist ◕_◕");
     }
 
+    LineCountStrategy strategy = new DefaultLineCountStrategy();
     try {
-      FileIterable iterable = new FileIterable(file);
-      long lines = StreamSupport.stream(iterable.spliterator(), false)
-                                .filter(c -> c == '\n')
-                                .count();
-      System.out.println(lines);
+      BigInteger count = strategy.countLines(file.toPath());
+      System.out.println(count);
     } catch (IOException ex) {
-      ex.printStackTrace();
-      panic("File could not be read");
+      panic(ex.getMessage());
     }
   }
 
