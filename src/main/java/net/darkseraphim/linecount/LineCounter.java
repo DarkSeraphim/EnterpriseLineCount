@@ -15,9 +15,11 @@ public class LineCounter {
       panic("Expected single file argument");
     }
 
+    FilePathSupplierType type = FilePathSupplierType.DEFAULT;
+
     FilePathSupplier filePathSupplier;
     try {
-      filePathSupplier = new DefaultFilePathSupplier().with(args[0]);
+      filePathSupplier = type.instanceForFileName(args[0]);
     } catch (LineCountException e) {
       panic(e.getMessage());
       return;
