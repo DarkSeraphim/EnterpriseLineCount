@@ -1,4 +1,6 @@
-package net.darkseraphim.linecount;
+package net.darkseraphim.linecount.strategy;
+
+import net.darkseraphim.linecount.FileIterable;
 
 import java.io.IOException;
 import java.nio.file.Path;

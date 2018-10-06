@@ -1,5 +1,12 @@
 package net.darkseraphim.linecount;
 
+import net.darkseraphim.linecount.ex.LineCountException;
+import net.darkseraphim.linecount.strategy.DefaultLineCountStrategy;
+import net.darkseraphim.linecount.strategy.LineCountStrategy;
+import net.darkseraphim.linecount.supplier.FilePathSupplier;
+import net.darkseraphim.linecount.supplier.FilePathSupplierType;
+
+import java.io.IOException;
 import java.math.BigInteger;
 
 public class LineCounter {
@@ -8,9 +15,11 @@ public class LineCounter {
       panic("Expected single file argument");
     }
 
+    FilePathSupplierType type = FilePathSupplierType.DEFAULT;
+
     FilePathSupplier filePathSupplier;
     try {
-      filePathSupplier = new DefaultFilePathSupplier().with(args[0]);
+      filePathSupplier = type.instanceForFileName(args[0]);
     } catch (LineCountException e) {
       panic(e.getMessage());
       return;

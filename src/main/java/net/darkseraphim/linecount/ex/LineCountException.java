@@ -1,4 +1,4 @@
-package net.darkseraphim.linecount;
+package net.darkseraphim.linecount.ex;
 
 public class LineCountException extends Exception {
 
