@@ -1,4 +1,4 @@
-package net.darkseraphim.linecount.supplier;
+package net.darkseraphim.linecount.spi.supplier;
 
 import net.darkseraphim.linecount.ex.LineCountException;
 
