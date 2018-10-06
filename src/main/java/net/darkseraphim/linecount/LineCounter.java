@@ -1,6 +1,5 @@
 package net.darkseraphim.linecount;
 
-import java.io.IOException;
 import java.math.BigInteger;
 
 public class LineCounter {
@@ -21,7 +20,7 @@ public class LineCounter {
     try {
       BigInteger count = strategy.countLines(filePathSupplier.get());
       System.out.println(count);
-    } catch (IOException | LineCountException ex) {
+    } catch (LineCountException ex) {
       panic(ex.getMessage());
     }
   }
