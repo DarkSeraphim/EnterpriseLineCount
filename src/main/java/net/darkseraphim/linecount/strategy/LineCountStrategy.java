@@ -1,4 +1,4 @@
-package net.darkseraphim.linecount;
+package net.darkseraphim.linecount.strategy;
 
 import java.io.IOException;
 import java.math.BigInteger;
@@ -6,6 +6,6 @@ import java.nio.file.Path;
 
 public interface LineCountStrategy {
 
-    public BigInteger countLines(Path path) throws IOException;
+    BigInteger countLines(Path path) throws IOException;
 
 }

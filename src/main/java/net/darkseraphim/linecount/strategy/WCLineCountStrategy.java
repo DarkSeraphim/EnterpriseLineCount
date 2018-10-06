@@ -1,4 +1,4 @@
-package net.darkseraphim.linecount;
+package net.darkseraphim.linecount.strategy;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;

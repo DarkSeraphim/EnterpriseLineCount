@@ -1,4 +1,6 @@
-package net.darkseraphim.linecount;
+package net.darkseraphim.linecount.supplier;
+
+import net.darkseraphim.linecount.ex.LineCountException;
 
 import java.nio.file.Path;
 
