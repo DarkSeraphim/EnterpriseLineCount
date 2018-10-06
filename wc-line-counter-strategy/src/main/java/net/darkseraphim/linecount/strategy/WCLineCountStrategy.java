@@ -8,6 +8,9 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 
+import net.darkseraphim.linecount.ex.LineCountException;
+import net.darkseraphim.linecount.spi.strategy.LineCountStrategy;
+
 public class WCLineCountStrategy implements LineCountStrategy {
     public BigInteger countLines(Path path) throws LineCountException {
         Process process;

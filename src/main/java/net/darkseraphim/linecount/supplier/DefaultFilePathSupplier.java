@@ -1,10 +1,11 @@
 package net.darkseraphim.linecount.supplier;
 
-import net.darkseraphim.linecount.ex.LineCountException;
-import net.darkseraphim.linecount.Utils;
-
 import java.io.File;
 import java.nio.file.Path;
+
+import net.darkseraphim.linecount.ex.LineCountException;
+import net.darkseraphim.linecount.spi.supplier.FilePathSupplier;
+import net.darkseraphim.linecount.Utils;
 
 public class DefaultFilePathSupplier implements FilePathSupplier {
 
