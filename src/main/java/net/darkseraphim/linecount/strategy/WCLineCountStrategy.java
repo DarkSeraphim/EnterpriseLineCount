@@ -1,5 +1,7 @@
 package net.darkseraphim.linecount.strategy;
 
+import net.darkseraphim.linecount.ex.LineCountException;
+
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;

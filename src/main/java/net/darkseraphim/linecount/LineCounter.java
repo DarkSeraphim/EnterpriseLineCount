@@ -1,12 +1,11 @@
 package net.darkseraphim.linecount;
 
 import net.darkseraphim.linecount.ex.LineCountException;
-import net.darkseraphim.linecount.strategy.DefaultLineCountStrategy;
+import net.darkseraphim.linecount.strategy.content.DefaultLineCountStrategy;
 import net.darkseraphim.linecount.strategy.LineCountStrategy;
 import net.darkseraphim.linecount.supplier.FilePathSupplier;
 import net.darkseraphim.linecount.supplier.FilePathSupplierType;
 
-import java.io.IOException;
 import java.math.BigInteger;
 
 public class LineCounter {
