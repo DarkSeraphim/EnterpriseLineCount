@@ -1,15 +1,18 @@
-package net.darkseraphim.linecount.strategy;
+package net.darkseraphim.linecount.strategy.content;
 
 import net.darkseraphim.linecount.FileIterable;
 import net.darkseraphim.linecount.ex.LineCountException;
+import net.darkseraphim.linecount.strategy.LineCountStrategy;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.stream.StreamSupport;
 import java.math.BigInteger;
+import java.nio.file.Path;
 
-public class DefaultLineCountStrategy implements LineCountStrategy {
+public abstract class ContentBasedLineCountStrategy implements LineCountStrategy {
 
+    abstract BigInteger countLines(Iterable<Character> content) throws LineCountException;
+
+    @Override
     public BigInteger countLines(Path path) throws LineCountException {
         FileIterable iterable;
         try {
@@ -17,9 +20,6 @@ public class DefaultLineCountStrategy implements LineCountStrategy {
         } catch (IOException e) {
             throw new LineCountException(e);
         }
-        long lines = StreamSupport.stream(iterable.spliterator(), false) 
-                                  .filter(c -> c == '\n') 
-                                  .count(); 
-        return BigInteger.valueOf(lines);
+        return this.countLines(iterable);
     }
 }
