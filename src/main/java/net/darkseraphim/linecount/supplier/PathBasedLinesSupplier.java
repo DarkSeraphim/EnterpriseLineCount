@@ -19,7 +19,7 @@ public class PathBasedLinesSupplier extends AbstractLinesSupplier {
     public static LinesSupplier forPath(String path) throws LineCountException {
         File file = new File(path);
         if (!file.exists() || !file.isFile()) {
-            throw new LineCountException("File does not exist ◕_◕");
+            throw new LineCountException("File does not exist ◕_◕: " + file.getAbsolutePath());
         }
         return PathBasedLinesSupplier.forPath(file.toPath());
     }

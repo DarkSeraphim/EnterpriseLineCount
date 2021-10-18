@@ -4,6 +4,7 @@ import net.darkseraphim.linecount.ex.LineCountException;
 import net.darkseraphim.linecount.strategy.AsyncLineCountStrategy;
 import net.darkseraphim.linecount.strategy.LineCountStrategy;
 import net.darkseraphim.linecount.supplier.LinesSupplier;
+import net.darkseraphim.linecount.LineEnding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,10 +20,10 @@ public class AsyncDelegatingLineCountStrategy implements AsyncLineCountStrategy 
     }
 
     @Override
-    public CompletableFuture<BigInteger> countLinesAsync(LinesSupplier linesSupplier) throws LineCountException {
+    public CompletableFuture<BigInteger> countLinesAsync(LinesSupplier linesSupplier, LineEnding lineEnding) throws LineCountException {
         return CompletableFuture.supplyAsync(() -> {
             try {
-                return delegate.countLines(linesSupplier);
+                return delegate.countLines(linesSupplier, lineEnding);
             } catch (LineCountException e) {
                 LOGGER.error("Failure in AsyncDelegatingLineCountStrategy:", e);
                 throw new RuntimeException(e);

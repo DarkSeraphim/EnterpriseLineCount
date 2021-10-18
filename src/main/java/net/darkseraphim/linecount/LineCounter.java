@@ -3,8 +3,10 @@ package net.darkseraphim.linecount;
 import net.darkseraphim.linecount.ex.LineCountException;
 import net.darkseraphim.linecount.strategy.content.DefaultLineCountStrategy;
 import net.darkseraphim.linecount.strategy.LineCountStrategy;
+import net.darkseraphim.linecount.strategy.LineEndingDetectionStrategy;
 import net.darkseraphim.linecount.strategy.content.ParallelDelegatingLineCountStrategy;
 import net.darkseraphim.linecount.strategy.delegating.AsyncDelegatingLineCountStrategy;
+import net.darkseraphim.linecount.strategy.lineendingdetection.OsBasedLineEndingDetection;
 import net.darkseraphim.linecount.supplier.LinesSupplier;
 import net.darkseraphim.linecount.supplier.PathBasedLinesSupplier;
 import org.slf4j.Logger;
@@ -32,6 +34,8 @@ public class LineCounter {
       return;
     }
 
+    LineEndingDetectionStrategy lineEndingDetectionStrategy = new OsBasedLineEndingDetection();
+
     LineCountStrategy hyperParallelStrategyTree =
             new AsyncDelegatingLineCountStrategy(
                     new ParallelDelegatingLineCountStrategy(
@@ -42,7 +46,8 @@ public class LineCounter {
             );
 
     try {
-      BigInteger count = hyperParallelStrategyTree.countLines(linesSupplier);
+      BigInteger count = hyperParallelStrategyTree.countLines(linesSupplier, lineEndingDetectionStrategy.detectLineEnding(linesSupplier).get());
+
       LOGGER.info("Count result: {}", count);
     } catch (LineCountException ex) {
       panic(ex.getMessage());
