@@ -13,7 +13,7 @@ public class DefaultLineCountStrategy implements ContentBasedLineCountStrategy {
     @Override
     public BigInteger countLines(LinesSupplier linesSupplier, LineEnding lineEnding) throws LineCountException {
         Iterable<Character> content = linesSupplier.asIterable();
-        long lines = Utils.chunks(content, 2)
+        long lines = Utils.chunks(content, lineEnding.asString().length())
             .map(cs -> cs.map(Object::toString).collect(Collectors.joining()))
             .filter(s -> s.equals(lineEnding.asString()))
             .count();
