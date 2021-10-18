@@ -2,18 +2,21 @@ package net.darkseraphim.linecount.strategy.content;
 
 import net.darkseraphim.linecount.ex.LineCountException;
 import net.darkseraphim.linecount.supplier.LinesSupplier;
+import net.darkseraphim.linecount.LineEnding;
+import net.darkseraphim.linecount.Utils;
 
 import java.math.BigInteger;
-import java.util.stream.StreamSupport;
+import java.util.stream.Collectors;
 
 public class DefaultLineCountStrategy implements ContentBasedLineCountStrategy {
 
     @Override
-    public BigInteger countLines(LinesSupplier linesSupplier) throws LineCountException {
+    public BigInteger countLines(LinesSupplier linesSupplier, LineEnding lineEnding) throws LineCountException {
         Iterable<Character> content = linesSupplier.asIterable();
-        long lines = StreamSupport.stream(content.spliterator(), false)
-                .filter(c -> c == '\n')
-                .count();
+        long lines = Utils.chunks(content, 2)
+            .map(cs -> cs.map(Object::toString).collect(Collectors.joining()))
+            .filter(s -> s.equals(lineEnding.asString()))
+            .count();
         return BigInteger.valueOf(lines);
     }
 }

@@ -1,5 +1,6 @@
 package net.darkseraphim.linecount.strategy.delegating;
 
+import net.darkseraphim.linecount.LineEnding;
 import net.darkseraphim.linecount.ex.LineCountException;
 import net.darkseraphim.linecount.supplier.LinesSupplier;
 import net.darkseraphim.linecount.strategy.LineCountStrategy;
@@ -12,7 +13,10 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 
 public class WCLineCountStrategy implements LineCountStrategy {
-    public BigInteger countLines(LinesSupplier linesSupplier) throws LineCountException {
+    public BigInteger countLines(LinesSupplier linesSupplier, LineEnding lineEnding) throws LineCountException {
+        if (lineEnding != LineEnding.LF) {
+            throw new LineCountException("WC only supports linefeeds");
+        }
         Process process;
         try {
             process = new ProcessBuilder("wc", "-l", linesSupplier.asPath().toString())

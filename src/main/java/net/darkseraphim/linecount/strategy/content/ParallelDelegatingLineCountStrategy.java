@@ -1,6 +1,7 @@
 package net.darkseraphim.linecount.strategy.content;
 
 import net.darkseraphim.linecount.Utils;
+import net.darkseraphim.linecount.LineEnding;
 import net.darkseraphim.linecount.ex.LineCountException;
 import net.darkseraphim.linecount.strategy.AsyncLineCountStrategy;
 import net.darkseraphim.linecount.supplier.IterableBasedLinesSupplier;
@@ -19,15 +20,15 @@ public class ParallelDelegatingLineCountStrategy implements ContentBasedLineCoun
     }
 
     @Override
-    public BigInteger countLines(LinesSupplier linesSupplier) throws LineCountException {
+    public BigInteger countLines(LinesSupplier linesSupplier, LineEnding lineEnding) throws LineCountException {
         Spliterator<Character> left = linesSupplier.asIterable().spliterator();
         Spliterator<Character> right = left.trySplit();
 
         LinesSupplier leftLinesSupplier = IterableBasedLinesSupplier.forIterable(Utils.spliteratorAsIterable(left));
         LinesSupplier rightLinesSupplier = IterableBasedLinesSupplier.forIterable(Utils.spliteratorAsIterable(right));
 
-        CompletableFuture<BigInteger> leftCount = this.delegate.countLinesAsync(leftLinesSupplier);
-        CompletableFuture<BigInteger> rightCount = this.delegate.countLinesAsync(rightLinesSupplier);
+        CompletableFuture<BigInteger> leftCount = this.delegate.countLinesAsync(leftLinesSupplier, lineEnding);
+        CompletableFuture<BigInteger> rightCount = this.delegate.countLinesAsync(rightLinesSupplier, lineEnding);
 
         try {
             return leftCount.thenCombine(rightCount, BigInteger::add).get();
