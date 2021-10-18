@@ -3,8 +3,8 @@ package net.darkseraphim.linecount;
 import net.darkseraphim.linecount.ex.LineCountException;
 import net.darkseraphim.linecount.strategy.content.DefaultLineCountStrategy;
 import net.darkseraphim.linecount.strategy.LineCountStrategy;
-import net.darkseraphim.linecount.supplier.FilePathSupplier;
-import net.darkseraphim.linecount.supplier.FilePathSupplierType;
+import net.darkseraphim.linecount.supplier.LinesSupplier;
+import net.darkseraphim.linecount.supplier.PathBasedLinesSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,11 +19,9 @@ public class LineCounter {
       panic("Expected single file argument");
     }
 
-    FilePathSupplierType type = FilePathSupplierType.DEFAULT;
-
-    FilePathSupplier filePathSupplier;
+    LinesSupplier linesSupplier;
     try {
-      filePathSupplier = type.instanceForFileName(args[0]);
+      linesSupplier = PathBasedLinesSupplier.forPath(args[0]);
     } catch (LineCountException e) {
       panic(e.getMessage());
       return;
@@ -31,7 +29,7 @@ public class LineCounter {
 
     LineCountStrategy strategy = new DefaultLineCountStrategy();
     try {
-      BigInteger count = strategy.countLines(filePathSupplier.get());
+      BigInteger count = strategy.countLines(linesSupplier);
       LOGGER.info("Count result: {}", count);
     } catch (LineCountException ex) {
       panic(ex.getMessage());
