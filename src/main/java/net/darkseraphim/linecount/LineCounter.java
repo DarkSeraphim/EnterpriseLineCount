@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigInteger;
+import java.time.Duration;
 
 public class LineCounter {
   private static final Logger LOGGER = LoggerFactory.getLogger(LineCounter.class);
@@ -20,6 +21,8 @@ public class LineCounter {
     if (args.length != 1) {
       panic("Expected single file argument");
     }
+
+    long startTime = System.nanoTime();
 
     LinesSupplier linesSupplier;
     try {
@@ -44,6 +47,10 @@ public class LineCounter {
     } catch (LineCountException ex) {
       panic(ex.getMessage());
     }
+
+    long endTime = System.nanoTime();
+    Duration elapsed = Duration.ofNanos(endTime - startTime);
+    LOGGER.info("Counting lines took {}.{} seconds", elapsed.toSecondsPart(), elapsed.toMillisPart());
   }
 
   private static void panic(String message) {
