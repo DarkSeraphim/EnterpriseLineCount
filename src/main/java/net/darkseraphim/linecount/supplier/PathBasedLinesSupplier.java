@@ -1,13 +1,11 @@
 package net.darkseraphim.linecount.supplier;
 
-import net.darkseraphim.linecount.FileIterable;
 import net.darkseraphim.linecount.ex.LineCountException;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 
-public class PathBasedLinesSupplier implements LinesSupplier {
+public class PathBasedLinesSupplier extends AbstractLinesSupplier {
     private final Path path;
 
     private PathBasedLinesSupplier(Path path) {
@@ -31,19 +29,4 @@ public class PathBasedLinesSupplier implements LinesSupplier {
         return this.path;
     }
 
-    @Override
-    public Iterable<Character> asIterable() throws LineCountException {
-        try {
-            return new FileIterable(this.asPath());
-        } catch (IOException e) {
-            throw new LineCountException(e);
-        }
-    }
-
-    @Override
-    public String asString() throws LineCountException {
-        StringBuilder sb = new StringBuilder();
-        this.asIterable().forEach(sb::append);
-        return sb.toString();
-    }
 }
