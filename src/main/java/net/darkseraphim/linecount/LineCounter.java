@@ -50,6 +50,7 @@ public class LineCounter {
 
     long endTime = System.nanoTime();
     Duration elapsed = Duration.ofNanos(endTime - startTime);
+    //TODO: Tracing integration for proper metrics
     LOGGER.info("Counting lines took {}.{} seconds", elapsed.toSecondsPart(), elapsed.toMillisPart());
   }
 
