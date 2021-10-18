@@ -1,12 +1,12 @@
 package net.darkseraphim.linecount.strategy;
 
 import net.darkseraphim.linecount.ex.LineCountException;
+import net.darkseraphim.linecount.supplier.LinesSupplier;
 
 import java.math.BigInteger;
-import java.nio.file.Path;
 
 public interface LineCountStrategy {
 
-    BigInteger countLines(Path path) throws LineCountException;
+    BigInteger countLines(LinesSupplier linesSupplier) throws LineCountException;
 
 }

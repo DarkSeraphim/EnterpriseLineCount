@@ -1,6 +1,8 @@
-package net.darkseraphim.linecount.strategy;
+package net.darkseraphim.linecount.strategy.delegating;
 
 import net.darkseraphim.linecount.ex.LineCountException;
+import net.darkseraphim.linecount.supplier.LinesSupplier;
+import net.darkseraphim.linecount.strategy.LineCountStrategy;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -8,13 +10,12 @@ import java.io.InputStream;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Path;
 
 public class WCLineCountStrategy implements LineCountStrategy {
-    public BigInteger countLines(Path path) throws LineCountException {
+    public BigInteger countLines(LinesSupplier linesSupplier) throws LineCountException {
         Process process;
         try {
-            process = new ProcessBuilder("wc", "-l", path.toString())
+            process = new ProcessBuilder("wc", "-l", linesSupplier.asPath().toString())
                     .start();
             if (process.waitFor() != 0) {
                 throw new IOException(readOutput(process.getErrorStream()));
