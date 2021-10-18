@@ -3,6 +3,8 @@ package net.darkseraphim.linecount;
 import net.darkseraphim.linecount.ex.LineCountException;
 import net.darkseraphim.linecount.strategy.content.DefaultLineCountStrategy;
 import net.darkseraphim.linecount.strategy.LineCountStrategy;
+import net.darkseraphim.linecount.strategy.content.ParallelDelegatingLineCountStrategy;
+import net.darkseraphim.linecount.strategy.delegating.AsyncDelegatingLineCountStrategy;
 import net.darkseraphim.linecount.supplier.LinesSupplier;
 import net.darkseraphim.linecount.supplier.PathBasedLinesSupplier;
 import org.slf4j.Logger;
@@ -27,9 +29,17 @@ public class LineCounter {
       return;
     }
 
-    LineCountStrategy strategy = new DefaultLineCountStrategy();
+    LineCountStrategy hyperParallelStrategyTree =
+            new AsyncDelegatingLineCountStrategy(
+                    new ParallelDelegatingLineCountStrategy(
+                            new AsyncDelegatingLineCountStrategy(
+                                    new DefaultLineCountStrategy()
+                            )
+                    )
+            );
+
     try {
-      BigInteger count = strategy.countLines(linesSupplier);
+      BigInteger count = hyperParallelStrategyTree.countLines(linesSupplier);
       LOGGER.info("Count result: {}", count);
     } catch (LineCountException ex) {
       panic(ex.getMessage());
