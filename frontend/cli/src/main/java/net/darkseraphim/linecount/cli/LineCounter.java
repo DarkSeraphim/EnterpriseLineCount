@@ -1,4 +1,4 @@
-package net.darkseraphim.linecount;
+package net.darkseraphim.linecount.cli;
 
 import net.darkseraphim.linecount.ex.LineCountException;
 import net.darkseraphim.linecount.strategy.content.DefaultLineCountStrategy;
